@@ -24,30 +24,30 @@ const (
 
 func (note musicalNote) getNoteName() string {
 	switch note {
-		case A:
-			return "A"
-		case Bb:
-			return "Bb"
-		case B:
-			return "B"
-		case C:
-			return "C"
-		case Db:
-			return "Db"
-		case D:
-			return "D"
-		case Eb:
-			return "Eb"
-		case E:
-			return "E"
-		case F:
-			return "F"
-		case Gb:
-			return "Gb"
-		case G:
-			return "G"
-		case Ab:
-			return "Ab"
+	case A:
+		return "A"
+	case Bb:
+		return "Bb"
+	case B:
+		return "B"
+	case C:
+		return "C"
+	case Db:
+		return "Db"
+	case D:
+		return "D"
+	case Eb:
+		return "Eb"
+	case E:
+		return "E"
+	case F:
+		return "F"
+	case Gb:
+		return "Gb"
+	case G:
+		return "G"
+	case Ab:
+		return "Ab"
 	}
 	panic(fmt.Sprintf("unsupported note in getNoteName(): %d", note))
 }
@@ -70,9 +70,12 @@ func (pday *practiceDay) getDateKey(date time.Time) musicalNote {
 }
 
 func main() {
+	// key of day calculated from given base, sept 11th 2021 was key of D
 	sep11 := time.Date(2021, 9, 11, 0, 0, 0, 0, time.UTC)
 	anchorDay := new(practiceDay)
 	anchorDay.musicalNote = D
 	anchorDay.date = sep11
-	fmt.Println(anchorDay.getCurrentDayKey().getNoteName())
+	unmoddedNote := anchorDay.getCurrentDayKey()
+	modNote := unmoddedNote % 12
+	fmt.Println(modNote.getNoteName())
 }
