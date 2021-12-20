@@ -62,17 +62,17 @@ func (pday *practiceDay) getCurrentDayKey() musicalNote {
 	today := time.Date(currentDay.Year(), currentDay.Month(), currentDay.Day(), 0, 0, 0, 0, time.UTC)
 	diff := today.Sub(pday.date)
 	daysSince := int(diff.Hours() / 24)
-	return musicalNote((pday.musicalNote + daysSince)%12)
+	return musicalNote((pday.musicalNote + daysSince) % 12)
 }
 
 func newPracticeDay(date time.Time, key int) *practiceDay {
-    return &practiceDay{date: date, musicalNote: key}
+	return &practiceDay{date: date, musicalNote: key}
 }
 
 func main() {
 	// key of day calculated from given base, sept 11th 2021 was key of D
 	sept_9_2021 := time.Date(2021, 9, 9, 0, 0, 0, 0, time.UTC)
-    practiceDay := newPracticeDay(sept_9_2021, C)
+	practiceDay := newPracticeDay(sept_9_2021, C)
 	todayKey := practiceDay.getCurrentDayKey()
 	fmt.Println(todayKey.getNoteName())
 }
