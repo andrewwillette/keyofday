@@ -59,23 +59,20 @@ type practiceDay struct {
 
 func (pday *practiceDay) getCurrentDayKey() musicalNote {
 	currentDay := time.Now()
-	zeroedCurrentDay := time.Date(currentDay.Year(), currentDay.Month(), currentDay.Day(), 0, 0, 0, 0, time.UTC)
-	diff := zeroedCurrentDay.Sub(pday.date)
+	today := time.Date(currentDay.Year(), currentDay.Month(), currentDay.Day(), 0, 0, 0, 0, time.UTC)
+	diff := today.Sub(pday.date)
 	daysSince := int(diff.Hours() / 24)
-	return musicalNote(pday.musicalNote + daysSince)
+	return musicalNote((pday.musicalNote + daysSince)%12)
 }
 
-func (pday *practiceDay) getDateKey(date time.Time) musicalNote {
-	panic("not implemented")
+func newPracticeDay(date time.Time, key int) *practiceDay {
+    return &practiceDay{date: date, musicalNote: key}
 }
 
 func main() {
 	// key of day calculated from given base, sept 11th 2021 was key of D
-	sep11 := time.Date(2021, 9, 11, 0, 0, 0, 0, time.UTC)
-	anchorDay := new(practiceDay)
-	anchorDay.musicalNote = D
-	anchorDay.date = sep11
-	unmoddedNote := anchorDay.getCurrentDayKey()
-	modNote := unmoddedNote % 12
-	fmt.Println(modNote.getNoteName())
+	sept_9_2021 := time.Date(2021, 9, 9, 0, 0, 0, 0, time.UTC)
+    practiceDay := newPracticeDay(sept_9_2021, C)
+	todayKey := practiceDay.getCurrentDayKey()
+	fmt.Println(todayKey.getNoteName())
 }
