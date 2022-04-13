@@ -22,6 +22,10 @@ const (
 	Ab             = iota
 )
 
+const (
+	musicalKeys = 12
+)
+
 func (note musicalNote) getNoteName() string {
 	switch note {
 	case A:
@@ -62,7 +66,7 @@ func (pday *practiceDay) getCurrentDayKey() musicalNote {
 	today := time.Date(currentDay.Year(), currentDay.Month(), currentDay.Day(), 0, 0, 0, 0, time.UTC)
 	diff := today.Sub(pday.date)
 	daysSince := int(diff.Hours() / 24)
-	return musicalNote((pday.musicalNote + daysSince) % 12)
+	return musicalNote((pday.musicalNote + daysSince) % musicalKeys)
 }
 
 func newPracticeDay(date time.Time, key int) *practiceDay {
