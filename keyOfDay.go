@@ -8,18 +8,18 @@ import (
 type musicalNote int
 
 const (
-	A  musicalNote = iota
-	Bb             = iota
-	B              = iota
-	C              = iota
-	Db             = iota
-	D              = iota
-	Eb             = iota
-	E              = iota
-	F              = iota
-	Gb             = iota
-	G              = iota
-	Ab             = iota
+	A musicalNote = iota
+	Bb
+	B
+	C
+	Db
+	D
+	Eb
+	E
+	F
+	Gb
+	G
+	Ab
 )
 
 const (
@@ -57,7 +57,7 @@ func (note musicalNote) getNoteName() string {
 }
 
 type practiceDay struct {
-	musicalNote int
+	musicalNote musicalNote
 	date        time.Time
 }
 
@@ -66,10 +66,10 @@ func (pday *practiceDay) getCurrentDayKey() musicalNote {
 	today := time.Date(currentDay.Year(), currentDay.Month(), currentDay.Day(), 0, 0, 0, 0, time.UTC)
 	diff := today.Sub(pday.date)
 	daysSince := int(diff.Hours() / 24)
-	return musicalNote((pday.musicalNote + daysSince) % musicalKeys)
+	return musicalNote((int(pday.musicalNote) + daysSince) % musicalKeys)
 }
 
-func newPracticeDay(date time.Time, key int) *practiceDay {
+func newPracticeDay(date time.Time, key musicalNote) *practiceDay {
 	return &practiceDay{date: date, musicalNote: key}
 }
 
