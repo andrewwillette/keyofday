@@ -63,7 +63,7 @@ type practiceDay struct {
 
 func (pday *practiceDay) getCurrentDayKey() musicalNote {
 	currentDay := time.Now()
-	today := time.Date(currentDay.Year(), currentDay.Month(), currentDay.Day(), 0, 0, 0, 0, time.UTC)
+	today := time.Date(currentDay.Year(), currentDay.Month(), currentDay.Day(), 0, 0, 0, 0, getChicagoTimeZone())
 	diff := today.Sub(pday.date)
 	daysSince := int(diff.Hours() / 24)
 	return musicalNote((int(pday.musicalNote) + daysSince) % musicalKeys)
@@ -74,8 +74,13 @@ func newPracticeDay(date time.Time, key musicalNote) *practiceDay {
 }
 
 func GetKeyOfDay() string {
-	sept_9_2021 := time.Date(2021, 9, 9, 0, 0, 0, 0, time.UTC)
+	sept_9_2021 := time.Date(2021, 9, 9, 0, 0, 0, 0, getChicagoTimeZone())
 	practiceDay := newPracticeDay(sept_9_2021, C)
 	todayKey := practiceDay.getCurrentDayKey()
 	return todayKey.getNoteName()
+}
+
+func getChicagoTimeZone() *time.Location {
+	loc, _ := time.LoadLocation("America/Chicago")
+	return loc
 }
