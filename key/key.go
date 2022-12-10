@@ -61,12 +61,17 @@ type practiceDay struct {
 	date        time.Time
 }
 
+// set the root practice day for calculating today's key
+var sept_9_2021 = time.Date(2021, 9, 9, 0, 0, 0, 0, getChicagoTimeZone())
+var rootPracticeDay = newPracticeDay(sept_9_2021, C)
+
 func (pday *practiceDay) getCurrentDayKey() musicalNote {
 	currentDay := time.Now()
+	currentDay = currentDay.In(getChicagoTimeZone())
 	today := time.Date(currentDay.Year(), currentDay.Month(), currentDay.Day(), 0, 0, 0, 0, getChicagoTimeZone())
 	diff := today.Sub(pday.date)
-	daysSince := int(diff.Hours() / 24)
-	return musicalNote((int(pday.musicalNote) + daysSince) % musicalKeys)
+	daysSinceRoot := int(diff.Hours() / 24)
+	return musicalNote((int(pday.musicalNote) + daysSinceRoot) % musicalKeys)
 }
 
 func newPracticeDay(date time.Time, key musicalNote) *practiceDay {
@@ -74,13 +79,14 @@ func newPracticeDay(date time.Time, key musicalNote) *practiceDay {
 }
 
 func GetKeyOfDay() string {
-	sept_9_2021 := time.Date(2021, 9, 9, 0, 0, 0, 0, getChicagoTimeZone())
-	practiceDay := newPracticeDay(sept_9_2021, C)
-	todayKey := practiceDay.getCurrentDayKey()
+	todayKey := rootPracticeDay.getCurrentDayKey()
 	return todayKey.getNoteName()
 }
 
 func getChicagoTimeZone() *time.Location {
-	loc, _ := time.LoadLocation("America/Chicago")
+	loc, err := time.LoadLocation("America/Chicago")
+	if err != nil {
+		panic(err)
+	}
 	return loc
 }
