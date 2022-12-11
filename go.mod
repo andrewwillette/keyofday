@@ -1,3 +1,3 @@
-module github.com/andrewwillette/keyOfDay
+module github.com/andrewwillette/keyofday
 
-go 1.18
+go 1.19

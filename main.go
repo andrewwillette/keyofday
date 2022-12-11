@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/andrewwillette/keyOfDay/key"
+	"github.com/andrewwillette/keyofday/key"
 )
 
 func main() {
