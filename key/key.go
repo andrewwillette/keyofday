@@ -5,6 +5,18 @@ import (
 	"time"
 )
 
+// Key returns the musical key for the given day
+func Key(day time.Time) string {
+	key := rootPracticeDay.getKeyOfDay(day)
+	return fmt.Sprintf("%s", key)
+}
+
+// TodaysKey returns the musical key for today
+func TodaysKey() string {
+	todayKey := rootPracticeDay.getKeyOfDay(time.Now())
+	return fmt.Sprintf("%s", todayKey)
+}
+
 type musicalNote int
 
 const (
@@ -26,7 +38,7 @@ const (
 	musicalKeys = 12
 )
 
-func (note musicalNote) getNoteName() string {
+func (note musicalNote) String() string {
 	switch note {
 	case A:
 		return "A"
@@ -62,11 +74,12 @@ type practiceDay struct {
 }
 
 // set the root practice day for calculating today's key
-var sept_9_2021 = time.Date(2021, 9, 9, 0, 0, 0, 0, getChicagoTimeZone())
-var rootPracticeDay = newPracticeDay(sept_9_2021, C)
+var rootDay = time.Date(2021, 9, 9, 0, 0, 0, 0, getChicagoTimeZone())
+var rootKey = C
+var rootPracticeDay = newPracticeDay(rootDay, rootKey)
 
-func (pday *practiceDay) getCurrentDayKey() musicalNote {
-	currentDay := time.Now()
+func (pday *practiceDay) getKeyOfDay(timeToGetKey time.Time) musicalNote {
+	currentDay := timeToGetKey
 	currentDay = currentDay.In(getChicagoTimeZone())
 	today := time.Date(currentDay.Year(), currentDay.Month(), currentDay.Day(), 0, 0, 0, 0, getChicagoTimeZone())
 	diff := today.Sub(pday.date)
@@ -76,11 +89,6 @@ func (pday *practiceDay) getCurrentDayKey() musicalNote {
 
 func newPracticeDay(date time.Time, key musicalNote) *practiceDay {
 	return &practiceDay{date: date, musicalNote: key}
-}
-
-func GetKeyOfDay() string {
-	todayKey := rootPracticeDay.getCurrentDayKey()
-	return todayKey.getNoteName()
 }
 
 func getChicagoTimeZone() *time.Location {
