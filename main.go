@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	println(key.GetKeyOfDay())
+	println(key.TodaysKey())
 }
